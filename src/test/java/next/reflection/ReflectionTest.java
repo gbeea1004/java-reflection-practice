@@ -43,7 +43,6 @@ public class ReflectionTest {
                 logger.debug("리턴 타입 : {}", declaredMethod.getReturnType().getTypeName());
             }
         }
-
     }
 
     @Test
