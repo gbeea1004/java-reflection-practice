@@ -19,8 +19,7 @@ public class Question {
         this(0, writer, title, contents, new Date(), 0);
     }
 
-    public Question(long questionId, String writer, String title, String contents, Date createdDate,
-            int countOfComment) {
+    public Question(long questionId, String writer, String title, String contents, Date createdDate, int countOfComment) {
         this.questionId = questionId;
         this.writer = writer;
         this.title = title;
