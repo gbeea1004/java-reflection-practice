@@ -1,5 +1,6 @@
 package next.reflection;
 
+import next.optional.User;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +11,8 @@ import java.lang.reflect.Method;
 
 public class ReflectionTest {
     private static final Logger logger = LoggerFactory.getLogger(ReflectionTest.class);
+    private final String NAME = "건희";
+    private final int AGE = 28;
 
     @Test
     public void showClass() {
@@ -20,7 +23,7 @@ public class ReflectionTest {
         logger.debug("<필드 정보>");
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
-            logger.debug("접근제어자 : {}, 타입 : {}, 필드 명 : {}",field.getModifiers(), field.getType(), field.getName());
+            logger.debug("접근제어자 : {}, 타입 : {}, 필드 명 : {}", field.getModifiers(), field.getType(), field.getName());
         }
 
         logger.debug("<생성자 정보>");
@@ -70,10 +73,28 @@ public class ReflectionTest {
         name.setAccessible(true);
         age.setAccessible(true);
 
-        name.set(student, "건희");
-        age.set(student, 28);
+        name.set(student, NAME);
+        age.set(student, AGE);
 
         logger.debug("이름 : {}", student.getName());
         logger.debug("나이 : {}", student.getAge());
+    }
+
+    @Test
+    public void createInstanceOfConstructorWithArguments() throws Exception {
+        Class<User> clazz = User.class;
+        Constructor<?>[] declaredConstructors = clazz.getDeclaredConstructors();
+        User user = null;
+        for (Constructor<?> declaredConstructor : declaredConstructors) {
+            Class<?>[] parameterTypes = declaredConstructor.getParameterTypes();
+            if (parameterTypes.length == 2
+                    && parameterTypes[0].isAssignableFrom(String.class)
+                    && parameterTypes[1].isAssignableFrom(Integer.class)) {
+                user = (User) declaredConstructor.newInstance(NAME, AGE);
+                break;
+            }
+        }
+        logger.debug("이름 : {}", user.getName());
+        logger.debug("나이 : {}", user.getAge());
     }
 }
